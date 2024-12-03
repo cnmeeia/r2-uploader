@@ -1,0 +1,35 @@
+name: Build Docker R2 Image and Upload Artifact
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build the Docker image
+        run: |
+          docker build -t R2:latest .
+
+      - name: Save Docker image as tar
+        run: |
+          docker save R2:latest -o R2.tar
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-docker-image
+          path: R2.tar
+
+      - name: Cleanup
+        run: |
+          rm R2.tar 
