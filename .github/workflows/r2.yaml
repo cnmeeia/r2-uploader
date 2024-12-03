@@ -20,18 +20,14 @@ jobs:
         run: |
           git clone https://github.com/cnmeeia/r2-uploader.git
           cd r2-uploader
-          docker build -t R2 .
+          docker build -t r2 .
 
       - name: Save Docker image as tar
         run: |
-          docker save R2 -o R2.tar
+          docker save r2 -o r2.tar
 
       - name: Upload Docker image artifact
         uses: actions/upload-artifact@v3
         with:
-          name: R2
-          path: R2.tar
-
-      - name: Cleanup
-        run: |
-          rm R2.tar 
+          name: r2
+          path: r2.tar
