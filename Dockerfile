@@ -1,30 +1,35 @@
-# Stage 1: Build
+
+# Stage 1: Builder
 FROM node:18-alpine AS builder
 
-# 设置工作目录
 WORKDIR /usr/src/app
 
-# 安装依赖
-COPY package.json ./
-COPY yarn.lock ./
-RUN yarn install --frozen-lockfile || yarn install
+# 只复制 package.json 和 yarn.lock
+COPY package.json yarn.lock ./
 
-# 复制代码并构建
+# 安装依赖
+RUN yarn install --frozen-lockfile --production
+
+# 复制源代码
 COPY . .
+
+# 构建应用
 RUN yarn build
 
 # Stage 2: Production
 FROM node:18-alpine
 
-# 设置工作目录
 WORKDIR /usr/src/app
 
-# 复制生产构建结果
+# 只复制构建产物
 COPY --from=builder /usr/src/app/dist ./dist
+
+# 安装 serve
 RUN yarn global add serve
 
-# 暴露端口
+# 清理不必要的文件
+RUN rm -rf /usr/src/app/node_modules
+
 EXPOSE 7896
 
-# 运行应用
 CMD ["serve", "-s", "dist", "-l", "7896"]
