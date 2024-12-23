@@ -5,8 +5,9 @@ FROM node:18-alpine AS builder
 WORKDIR /usr/src/app
 
 # 安装构建所需的依赖
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn install --frozen-lockfile || yarn install
 
 # 复制项目文件并进行构建
 COPY . .
