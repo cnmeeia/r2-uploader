@@ -11,15 +11,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
       - name: Build the Docker image
         run: |
-          git clone https://github.com/cnmeeia/r2-uploader.git
-          cd r2-uploader
           docker build -t r2 .
 
       - name: Save Docker image as tar
