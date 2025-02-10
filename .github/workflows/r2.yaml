@@ -18,7 +18,7 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          docker buildx build --platform linux/arm64 -t r2 --load .
+          docker buildx build --platform linux/arm64,linux/amd64 -t r2 --load .
 
       - name: Save Docker image as tar
         run: |
