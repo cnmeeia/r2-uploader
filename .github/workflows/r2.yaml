@@ -16,16 +16,26 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build the Docker image
+      - name: Build and push the Docker image
         run: |
-          docker buildx build --platform linux/arm64,linux/amd64 -t r2 --load .
+          docker buildx build --platform linux/arm64,linux/amd64 -t r2 --push .
 
-      - name: Save Docker image as tar
+      # 如果您需要保存镜像为 tar 文件，您需要单独构建每个平台
+      - name: Save Docker image as tar (optional)
         run: |
-          docker save r2 -o r2.tar
+          docker buildx build --platform linux/arm64 -t r2-arm64 --load .
+          docker save r2-arm64 -o r2-arm64.tar
+          docker buildx build --platform linux/amd64 -t r2-amd64 --load .
+          docker save r2-amd64 -o r2-amd64.tar
 
-      - name: Upload Docker image artifact
+      - name: Upload Docker image artifacts (optional)
+        uses: actions/upload-artifact@latest
+        with:
+          name: r2-arm64
+          path: r2-arm64.tar
+          
+      - name: Upload Docker image artifacts (optional)
         uses: actions/upload-artifact@v4
         with:
-          name: r2
-          path: r2.tar
+          name: r2-amd64
+          path: r2-amd64.tar
