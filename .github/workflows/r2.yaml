@@ -25,7 +25,7 @@ jobs:
           docker save r2 -o r2.tar
 
       - name: Upload Docker image artifact
-        uses: actions/upload-artifact@latest  # 使用最新版本
+        uses: actions/upload-artifact@v4
         with:
           name: r2
           path: r2.tar
