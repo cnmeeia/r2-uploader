@@ -24,12 +24,12 @@ jobs:
 
       - name: Build and push the Docker image for amd64
         run: |
-          docker buildx build --platform linux/amd64 -t your-dockerhub-username/r2:amd64 --push .
+          docker buildx build --platform linux/amd64 -t mick2019/r2:amd64 --push .
 
       - name: Build and push the Docker image for arm64
         run: |
-          docker buildx build --platform linux/arm64 -t your-dockerhub-username/r2:arm64 --push .
+          docker buildx build --platform linux/arm64 -t mick2019/r2:arm64 --push .
 
       - name: Build and push the multi-architecture manifest
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 -t your-dockerhub-username/r2:latest --push .
+          docker buildx build --platform linux/amd64,linux/arm64 -t mick2019/r2:latest --push .
